@@ -15,8 +15,13 @@ jobs:
     steps:
     - name: checkout repo
       uses: actions/checkout@v4
-    - name: checkout repo
+    - name: Set up node
       uses: actions/setup-node@v4
+    - name: Install newman
+      run: npm install -g newman
+    - name: Set up Docker
+      uses: docker-practice/actions-setup-docker@master
+      timeout-minutes: 12
     - name: Build Calc
-      run: docker build -t image -f ./src/calc/Dockerfile_test ./src/calc
+      run: docker build -t test_calc -f ./src/calc/Dockerfile_test ./src/calc
 
