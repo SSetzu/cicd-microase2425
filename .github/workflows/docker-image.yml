@@ -21,6 +21,13 @@ jobs:
       run: npm install -g newman
     - name: Set up Docker
       uses: docker/setup-buildx-action@v3
-    - name: Build Calc
-      run: docker build -t test_calc -f ./src/calc/Dockerfile_test ./src/calc
+    - name: Build Test Calc
+      run: | 
+       docker build -t test_calc -f ./src/calc/Dockerfile_test ./src/calc
+       docker run -d -p 5000:5000 --name test_calc test_calc
+    - name: Run test calc
+      run: |
+       newman run ./tests/calc_ut.postman_collection.json
+       docker rm -fv test_calc
+      
 
