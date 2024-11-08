@@ -1,0 +1,22 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@v4
+    - name: checkout repo
+      uses: actions/setup-node@v4
+    - name: Build Calc
+      run: docker build -t image -f ./src/calc/Dockerfile_test ./src/calc
+
