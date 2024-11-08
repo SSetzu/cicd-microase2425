@@ -8,10 +8,8 @@ on:
 
 jobs:
 
-  build:
-
+  ci:
     runs-on: ubuntu-latest
-
     steps:
     - name: checkout repo
       uses: actions/checkout@v4
@@ -21,13 +19,20 @@ jobs:
       run: npm install -g newman
     - name: Set up Docker
       uses: docker/setup-buildx-action@v3
-    - name: Build Test Calc
+    - name: build test calc
       run: | 
        docker build -t test_calc -f ./src/calc/Dockerfile_test ./src/calc
        docker run -d -p 5000:5000 --name test_calc test_calc
-    - name: Run test calc
+    - name: run test calc
       run: |
        newman run ./tests/calc_ut.postman_collection.json
        docker rm -fv test_calc
-      
+    - name: build test string
+      run: | 
+       docker build -t test_calc -f ./src/string/Dockerfile_test ./src/string
+       docker run -d -p 5000:5000 --name test_string test_string
+    - name: run test string
+      run: |
+       newman run ./tests/string_ut.postman_collection.json
+       docker rm -fv test_string      
 
